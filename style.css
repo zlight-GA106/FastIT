@@ -1,0 +1,50 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: #f0f2f5; font-family: 'SimHei', '黑体', sans-serif; display: flex; justify-content: center; }
+.app-container { width: 100%; max-width: 900px; min-height: 100vh; background-color: #ffffff; display: flex; flex-direction: column; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
+.toolbar { padding: 15px; background-color: #333; color: white; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar button, .toolbar select { padding: 8px 10px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer; font-size: 13px; transition: 0.2s; }
+.toolbar button:hover { background-color: #0056b3; }
+.toolbar .btn-primary { background-color: #28a745; }
+.toolbar .btn-warning { background-color: #ffc107; color: #333; }
+
+.font-controls { display: flex; align-items: center; gap: 5px; font-size: 13px; background: rgba(255, 255, 255, 0.1); padding: 5px 8px; border-radius: 4px; }
+.receipt-wrapper { flex: 1; padding: 20px; display: flex; justify-content: center; background-color: #e9ecef; overflow-y: auto; position: relative; }
+
+.receipt-paper { position: relative; background-color: white; color: black; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); font-size: 14px; line-height: 1.5; z-index: 1; transition: width 0.3s, min-height 0.3s; overflow: hidden; }
+.receipt-paper.mode-58mm { width: 384px; min-height: 300px; }
+.receipt-paper.mode-a4 { width: 794px; min-height: 1123px; }
+
+.bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; color: rgba(0, 0, 0, 0.1); z-index: -1; white-space: nowrap; text-align: center; pointer-events: auto; }
+.bg-text.locked { pointer-events: none; }
+.bg-text:focus { outline: 2px dashed #ffc107; background-color: rgba(255, 193, 7, 0.1); }
+
+.locked-area { text-align: center; user-select: none; }
+.editable-area { min-height: 30px; outline: 1px dashed #ccc; padding: 5px; margin: 5px 0; position: relative; transition: background-color 0.2s; }
+.editable-area:focus { outline: 2px solid #007bff; background: #f8f9fa; }
+.editable-area.locked-element { outline: 2px dashed #dc3545; background-color: rgba(220, 53, 69, 0.05); cursor: not-allowed; }
+
+.layout-active .editable-area { cursor: move; outline: 2px dashed #ffc107; position: absolute; background: rgba(255,193,7,0.05); }
+.layout-active .editable-area:hover { z-index: 10; background: rgba(255,193,7,0.15); }
+
+/* 特殊区块（如标题）在排版模式下显示为绿色边框，以示区分 */
+.layout-active .editable-area.non-deletable { outline: 2px dashed #28a745; background: rgba(40, 167, 69, 0.05); }
+
+.delete-btn { display: none; position: absolute; top: -10px; right: -10px; background: red; color: white; width: 20px; height: 20px; border-radius: 50%; text-align: center; line-height: 20px; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 100; }
+.layout-active .delete-btn { display: block; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+table, th, td { border: 1px solid #333; padding: 5px; text-align: center; }
+.divider { text-align: center; overflow: hidden; white-space: nowrap; margin: 5px 0; }
+
+.toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 5px; z-index: 9999; display: none; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+@media print {
+    @page { margin: 0; }
+    html, body { height: auto; }
+    body, .app-container { background-color: white; box-shadow: none; max-width: none; min-height: auto; }
+    .no-print, .toast { display: none !important; }
+    .receipt-wrapper { padding: 0; background-color: white; overflow: visible; }
+    .receipt-paper { box-shadow: none; padding: 5mm; }
+    .editable-area { outline: none !important; background: transparent !important; margin: 0; }
+}
